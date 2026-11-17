@@ -2,6 +2,9 @@
 frontend/node_modules/
 frontend/dist/
 backend/target/
+backend/src/main/resources/static/
+backend/.mvn/apache-maven-*/
+backend/.mvn/maven.zip
 *.log
 
 # Segredos e arquivos locais
