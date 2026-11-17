@@ -11,3 +11,4 @@
 | 16/11/2026 | feature/ux | Corrigido filtro para tratar “Móveis” e “Recicláveis” sem perder acentos. Adicionado teste específico. | 7 testes Java, lint e build passaram; integrar versão final. |
 | 16/11/2026 | pausa | Verificado que somente o frontend estava ativo; a API na porta 8080 estava desligada, impedindo carregar categorias. Criado `docs/CONTINUACAO.md`. | Na próxima sessão, iniciar backend antes do frontend e revisar a interface. |
 | 16/11/2026 | preparação GitHub | Instalado GitHub CLI 2.104.0 para permitir repositório privado e envio do histórico. | Aguardar login da proprietária no GitHub; nenhum remoto foi criado ainda. |
+| 16/11/2026 | encerramento | Criado repositório privado, enviadas `main`, `develop` e tag `v1.0.0`. Atualizado o registro de continuação com diagnóstico e prioridades de interface. | Retomar iniciando backend e frontend; validar categorias antes da revisão visual. |
