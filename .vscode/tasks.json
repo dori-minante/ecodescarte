@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "EcoDescarte: iniciar backend", "type": "shell", "command": ".\\mvnw.cmd spring-boot:run", "options": { "cwd": "${workspaceFolder}\\backend" }, "isBackground": true, "problemMatcher": [] },
+    { "label": "EcoDescarte: iniciar frontend", "type": "shell", "command": "npm run dev", "options": { "cwd": "${workspaceFolder}\\frontend" }, "isBackground": true, "problemMatcher": [] },
+    { "label": "EcoDescarte: testar backend", "type": "shell", "command": ".\\mvnw.cmd test", "options": { "cwd": "${workspaceFolder}\\backend" }, "problemMatcher": [] },
+    { "label": "EcoDescarte: validar frontend", "type": "shell", "command": "npm run lint; npm run build", "options": { "cwd": "${workspaceFolder}\\frontend" }, "problemMatcher": [] },
+    { "label": "EcoDescarte: build de produção", "type": "shell", "command": "npm run build; Remove-Item -Recurse -Force ..\\backend\\src\\main\\resources\\static\\* -ErrorAction SilentlyContinue; Copy-Item -Recurse dist\\* ..\\backend\\src\\main\\resources\\static; Set-Location ..\\backend; .\\mvnw.cmd clean package", "options": { "cwd": "${workspaceFolder}\\frontend" }, "problemMatcher": [] }
+  ]
+}

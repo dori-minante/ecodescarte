@@ -1,0 +1,32 @@
+# Dependências e resultados de build
+frontend/node_modules/
+frontend/dist/
+backend/target/
+*.log
+
+# Segredos e arquivos locais
+.env
+.env.*
+!.env.example
+
+# Instruções locais de agentes/ferramentas
+AGENTS.md
+AGENTS_*.md
+.codex/
+.codex*
+.ai/
+.agent/
+agents/
+*.prompt.md
+*.prompts.md
+
+# Logs locais de ferramentas
+.codex-log*
+agent-log*
+ai-log*
+
+# Sistema operacional e editor
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
