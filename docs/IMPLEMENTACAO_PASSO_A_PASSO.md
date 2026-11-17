@@ -8,7 +8,7 @@ Este documento registra a construção em ordem cronológica. **Terminal** é a 
 
 ## Etapa 2 — Organizar o projeto
 
-**Objetivo:** criar uma base limpa e repetível. **Arquivos:** `.gitignore` impede que dependências, resultados de build e informações locais sejam enviados; `.editorconfig` mantém formatação; `.vscode/extensions.json`, `settings.json` e `tasks.json` orientam o VS Code; `Dockerfile` permite empacotar o projeto. **Comandos:** `git init` já havia criado o repositório; `git add` e `git commit -m "chore: initialize project structure"` registraram a base. **Resultado:** estrutura pronta. **Problema:** o Git precisou de permissão de gravação no diretório de histórico; a operação foi autorizada e concluída. **Como verificar:** `git status` não deve listar `AGENTS.md`.
+**Objetivo:** criar uma base limpa e repetível. **Arquivos:** `.gitignore` impede que dependências, resultados de build e informações locais sejam enviados; `.editorconfig` mantém formatação; `.vscode/extensions.json`, `settings.json` e `tasks.json` orientam o VS Code; `Dockerfile` permite empacotar o projeto. **Comandos:** `git init` já havia criado o repositório; `git add` e `git commit -m "chore: initialize project structure"` registraram a base. **Resultado:** estrutura pronta. **Problema:** o Git precisou de permissão de gravação no diretório de histórico; a operação foi autorizada e concluída. **Como verificar:** `git status` deve mostrar somente arquivos que realmente pertencem ao projeto.
 
 ## Etapa 3 — Criar o backend
 
