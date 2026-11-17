@@ -41,3 +41,7 @@ Este documento registra a construção em ordem cronológica. **Terminal** é a 
 ## Etapa 9 — Documentação e próximas melhorias
 
 **Objetivo:** permitir entendimento por pessoa leiga e avaliação acadêmica. **Arquivos:** os documentos em `docs/` explicam fontes, testes, requisitos, versão, roteiro comunitário e demonstração. **Limitações:** a amostra deve ser atualizada periodicamente e mapas/CEP dependem de internet. **Melhorias futuras:** importar a lista municipal completa com processo de revisão, incluir mais pontos de logística reversa confirmados e aplicar teste com participantes reais, sem inventar respostas.
+
+## Etapa 10 — Preparar o envio ao GitHub
+
+**Objetivo:** permitir criar uma cópia privada do histórico fora do computador. **Ferramenta:** GitHub CLI é o programa oficial de terminal que conversa com o GitHub. **O que foi feito:** foi instalado o GitHub CLI 2.104.0 pelo comando `winget install --id GitHub.cli -e --accept-package-agreements --accept-source-agreements`. **Resultado:** instalação concluída. **Como verificar:** digite `gh --version` em um novo terminal. **Ponto que exige ação da proprietária:** o GitHub CLI ainda precisa de login seguro no navegador antes que seja possível criar ou enviar um repositório privado. Nenhuma conta, repositório remoto ou informação de acesso foi criada sem essa autorização.
