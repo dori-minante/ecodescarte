@@ -9,3 +9,4 @@
 | 16/11/2026 | feature/integracao | Corrigida leitura do ViaCEP e ajustado lint. Decisão: mapa geocodificado sob demanda, não coordenadas inventadas. | Rodar testes, JAR e fluxo integrado. |
 | 16/11/2026 | docs/documentacao | Criados guias, fontes, requisitos, testes, roteiro e histórico de versão. | Revisar documentação, merge final e tag. |
 | 16/11/2026 | feature/ux | Corrigido filtro para tratar “Móveis” e “Recicláveis” sem perder acentos. Adicionado teste específico. | 7 testes Java, lint e build passaram; integrar versão final. |
+| 16/11/2026 | pausa | Verificado que somente o frontend estava ativo; a API na porta 8080 estava desligada, impedindo carregar categorias. Criado `docs/CONTINUACAO.md`. | Na próxima sessão, iniciar backend antes do frontend e revisar a interface. |
