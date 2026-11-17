@@ -9,7 +9,7 @@
 | `.\mvnw.cmd test` em `backend/` | testes JUnit verdes | PASS |
 | `.\mvnw.cmd clean package` | JAR criado | PASS — 6 testes passaram e JAR foi gerado |
 
-Os testes JUnit cobrem saúde da API, listagem de 15 locais, filtro de bairro, detalhe e resposta 404 amigável.
+Os testes JUnit cobrem saúde da API, listagem de 15 locais, filtro de bairro, filtro de categoria com acento, detalhe e resposta 404 amigável. Ao final foram executados **7 testes**, sem falhas.
 
 ## Roteiro de teste manual
 

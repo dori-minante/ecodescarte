@@ -49,7 +49,7 @@ public class EcopointController {
 
     private boolean matchesCategory(Ecopoint point, String category) {
         if (category.equals("gesso")) return point.acceptsGypsum();
-        return point.categories().contains(category);
+        return point.categories().stream().anyMatch(item -> normalized(item).equals(normalized(category)));
     }
 
     private String normalized(String value) {
