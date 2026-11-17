@@ -26,6 +26,9 @@ class EcopointControllerTests {
     @Test void filtersByDistrict() throws Exception {
         mvc.perform(get("/api/ecopoints").param("district", "Vila Mariana")).andExpect(status().isOk()).andExpect(jsonPath("$[0].district", containsString("Vila Mariana")));
     }
+    @Test void filtersAccentedCategoryBySlug() throws Exception {
+        mvc.perform(get("/api/ecopoints").param("category", "moveis")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(15)));
+    }
     @Test void returnsDetail() throws Exception {
         mvc.perform(get("/api/ecopoints/bresser")).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Ecoponto Bresser"));
     }
