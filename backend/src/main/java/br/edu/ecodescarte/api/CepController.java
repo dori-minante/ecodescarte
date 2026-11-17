@@ -21,13 +21,18 @@ public class CepController {
             Map<?, ?> response = client.get().uri("https://viacep.com.br/ws/{cep}/json/", sanitized).retrieve().body(Map.class);
             if (response == null || Boolean.TRUE.equals(response.get("erro"))) return ResponseEntity.notFound().build();
             return ResponseEntity.ok(Map.of(
-                "cep", response.getOrDefault("cep", sanitized),
-                "district", response.getOrDefault("bairro", ""),
-                "city", response.getOrDefault("localidade", ""),
-                "state", response.getOrDefault("uf", "")
+                "cep", value(response, "cep", sanitized),
+                "district", value(response, "bairro", ""),
+                "city", value(response, "localidade", ""),
+                "state", value(response, "uf", "")
             ));
         } catch (Exception exception) {
             return ResponseEntity.status(503).body(Map.of("message", "Não foi possível consultar o CEP agora. Tente novamente ou informe o bairro."));
         }
+    }
+
+    private String value(Map<?, ?> values, String key, String fallback) {
+        Object value = values.get(key);
+        return value == null ? fallback : value.toString();
     }
 }
