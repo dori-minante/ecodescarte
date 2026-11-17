@@ -1,0 +1,5 @@
+import { useEffect, useState } from 'react'
+import { api } from '../api'
+import ErrorState from '../components/ErrorState'
+import LoadingState from '../components/LoadingState'
+export default function GuidesPage() { const [guides, setGuides] = useState([]); const [error, setError] = useState(''); useEffect(() => { api('/waste-guides').then(setGuides).catch(error => setError(error.message)) }, []); return <section className="container page-section"><h1>Orientações de descarte</h1><p className="intro">Veja como preparar cada material antes de procurar um local.</p>{error && <ErrorState message={error} />}{!error && !guides.length && <LoadingState />}{<div className="guides-grid">{guides.map(guide => <article className="guide-card" key={guide.slug}><h2>{guide.title}</h2><h3>Antes de sair</h3><p>{guide.preparation}</p><h3>Destino indicado</h3><p>{guide.destination}</p><p className="warning"><strong>Cuidado:</strong> {guide.warning}</p><a href={guide.officialReferenceUrl} target="_blank" rel="noreferrer">Consultar referência ↗</a></article>)}</div>}</section> }
