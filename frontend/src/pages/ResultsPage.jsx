@@ -9,10 +9,6 @@ import LoadingState from '../components/LoadingState'
 import SearchForm from '../components/SearchForm'
 
 const specialCategories = ['eletronicos', 'pilhas-baterias', 'oleo']
-const regionalMatches = {
-  'casa verde alta': ['parque peruche', 'jardim centenario', 'vila santista', 'jardim antartica', 'vila palmeiras'],
-  'casa verde': ['parque peruche', 'jardim centenario', 'vila santista', 'jardim antartica', 'vila palmeiras'],
-}
 
 export default function ResultsPage() {
   const [params] = useSearchParams()
@@ -37,20 +33,18 @@ export default function ResultsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const normalizedDistrict = normalizeText(district)
-  const relevantDistricts = regionalMatches[normalizedDistrict] || [normalizedDistrict]
   const matchesCategory = point => !category || point.categories.some(item => normalizeText(item) === normalizeText(category)) || (category === 'gesso' && point.acceptsGypsum)
-  const matchRank = point => relevantDistricts.findIndex(term => normalizeText(`${point.district} ${point.address} ${point.name}`).includes(term))
-  const directMatches = points.filter(point => matchesCategory(point) && (!district || matchRank(point) >= 0))
+  const matchesDistrict = point => !district || normalizeText(`${point.district} ${point.address} ${point.name}`).includes(normalizeText(district))
+  const directMatches = points.filter(point => matchesCategory(point) && matchesDistrict(point))
   const usingCityFallback = Boolean(district && directMatches.length === 0)
   const filtered = usingCityFallback ? points.filter(matchesCategory) : directMatches
-  const ordered = [...filtered].sort((first, second) => (matchRank(first) < 0 ? 99 : matchRank(first)) - (matchRank(second) < 0 ? 99 : matchRank(second)) || first.name.localeCompare(second.name, 'pt-BR'))
+  const ordered = [...filtered].sort((first, second) => first.name.localeCompare(second.name, 'pt-BR'))
   const guide = guides.find(item => item.slug === category)
   const googleMapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`ecoponto perto de ${locationTerm}, São Paulo, SP`)}`
 
   return <section className="container page-section">
     <Link className="back-link" to="/">← Página inicial</Link><h1>Resultados para o seu descarte</h1>
-    <p className="intro">Faça outra busca aqui ou use os filtros abaixo. Os pontos da mesma região aparecem antes; para a rota e a distância por ruas, abra o Google Maps.</p>
+    <p className="intro">Faça outra busca aqui ou use os filtros abaixo. Para encontrar pontos por rua e conferir a distância real da rota, abra o Google Maps.</p>
     <section aria-labelledby="new-search-title"><h2 id="new-search-title">Fazer nova busca</h2><SearchForm /></section>
     {specialCategories.includes(category) && guide && <aside className="guide-callout"><h2>{guide.title}: procure logística reversa</h2><p>{guide.destination}</p><p><strong>Atenção:</strong> {guide.warning}</p><a className="secondary-button" href={guide.officialReferenceUrl} target="_blank" rel="noreferrer">Abrir localizador especializado ↗</a></aside>}
     <FilterBar category={specialCategories.includes(category) ? '' : category} district={district} onCategory={setCategory} onDistrict={setDistrict} />
