@@ -21,6 +21,7 @@ export default function ResultsPage() {
   const [guides, setGuides] = useState([])
   const [routeDistances, setRouteDistances] = useState({})
   const [proximityStatus, setProximityStatus] = useState('')
+  const [proximityLoading, setProximityLoading] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -47,13 +48,16 @@ export default function ResultsPage() {
   }, [])
 
   useEffect(() => {
-    if (!locationTerm || !points.length) { setRouteDistances({}); setProximityStatus(''); return undefined }
+    if (!locationTerm || !points.length) { setRouteDistances({}); setProximityStatus(''); setProximityLoading(false); return undefined }
     let active = true
+    setRouteDistances({})
+    setProximityLoading(true)
     setProximityStatus('Calculando as rotas para ordenar os ecopontos mais próximos…')
     geocode(`${locationTerm}, São Paulo, SP, Brasil`)
       .then(origin => routeDistancesInKm(origin, points))
       .then(distances => { if (active) { setRouteDistances(distances); setProximityStatus('Ecopontos ordenados por distância de rota.') } })
       .catch(() => { if (active) setProximityStatus('Não foi possível calcular as rotas agora. A lista continua disponível em ordem alfabética.') })
+      .finally(() => { if (active) setProximityLoading(false) })
     return () => { active = false }
   }, [locationTerm, points])
 
@@ -75,8 +79,7 @@ export default function ResultsPage() {
     {!loading && !error && <>
       {locationTerm && <aside className="guide-callout"><h2>Listando ecopontos mais próximos</h2><p>Mostramos todos os pontos compatíveis em São Paulo e colocamos primeiro os que têm menor distância pela rota a partir de “{locationTerm}”. Assim, um ponto de um bairro vizinho não fica de fora.</p></aside>}
       {proximityStatus && <p className="proximity-status" role="status">{proximityStatus}</p>}
-      <p className="result-count">{ordered.length} {ordered.length === 1 ? 'ponto encontrado' : 'pontos encontrados'}.</p>
-      {ordered.length ? <div className="point-grid">{ordered.map(point => <EcopointCard point={point} distance={routeDistances[point.id]} key={point.id} />)}</div> : <EmptyState>Não há ecopontos cadastrados para este tipo de material. Faça uma nova busca ou consulte o Google Maps.</EmptyState>}
+      {proximityLoading ? <LoadingState text="Organizando os ecopontos pela distância da rota…" /> : <><p className="result-count">{ordered.length} {ordered.length === 1 ? 'ponto encontrado' : 'pontos encontrados'}.</p>{ordered.length ? <div className="point-grid">{ordered.map(point => <EcopointCard point={point} distance={routeDistances[point.id]} key={point.id} />)}</div> : <EmptyState>Não há ecopontos cadastrados para este tipo de material. Faça uma nova busca ou consulte o Google Maps.</EmptyState>}</>}
     </>}
   </section>
 }
