@@ -10,6 +10,7 @@ Data de consulta: **16 de novembro de 2026**. Esta aplicação não cria endere�
 | Mapa Abrecon | https://mapa.abrecon.org.br/ecoponto/lista | nome e endereço de pontos publicados no mapa de descarte | segunda fonte de conferência de endereço; divergências não substituem a confirmação oficial |
 | Google Maps | https://www.google.com/maps | busca pública de ecopontos próximos e rota por ruas | botão externo na página de resultados; não utiliza API, chave ou coleta automática de dados |
 | GeoSampa — camada WFS Ecoponto | https://metadados.geosampa.prefeitura.sp.gov.br/geonetwork/intranet/api/records/ab117be9-ad7f-41a2-a3ee-cba5709d04b2 | nome, localização cartográfica e coordenadas da camada pública | carregamento dinâmico dos ecopontos na página de resultados, com fallback para a base local |
+| OSRM — roteamento público | https://router.project-osrm.org/ | distância estimada seguindo vias entre a busca e os ecopontos com coordenadas | ordenar resultados por rota; se o serviço não responder, o site informa que não conseguiu calcular a rota e não mostra distância |
 | ViaCEP | https://viacep.com.br/ | bairro, cidade e UF de um CEP | busca por CEP, sem chave privada |
 | OpenStreetMap/Nominatim | https://www.openstreetmap.org/ e https://nominatim.openstreetmap.org/ | mapa e transformação temporária de endereço em posição | mapa no detalhe e ordenação por proximidade; as coordenadas são consultadas sob demanda, respeitando o limite de uma consulta por segundo, e ficam no navegador para reutilização |
 
