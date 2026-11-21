@@ -28,6 +28,11 @@ public class EcopointRepository {
             point("imigrantes", "Ecoponto Imigrantes", "Rua Opixe", "Vila Guarani", "04312-080", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura; recebe gesso.", true, source, date),
             point("jabaquara", "Ecoponto Jabaquara", "Rua Jupatis, nº 140", "Vila Mira", "04377-200", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura; recebe gesso.", true, source, date),
             point("vila-guilherme", "Ecoponto Vila Guilherme", "Rua José Bernardo Pinto, nº 1480", "Vila Guilherme", "02055-001", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura; recebe gesso.", true, source, date)
+            ,point("parque-peruche", "Ecoponto Parque Peruche", "Avenida Engenheiro Caetano Álvares, nº 3142", "Parque Peruche", "02535-008", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura para a região da Casa Verde.", false, source, date)
+            ,point("vila-nova-cachoeirinha", "Ecoponto Vila Nova Cachoeirinha", "Rua Felix Alves Pereira, nº 113", "Jardim Centenário", "02882-030", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura para a região da Casa Verde/Cachoeirinha.", false, source, date)
+            ,point("vila-santa-maria", "Ecoponto Vila Santa Maria", "Rua André Bolsena com Travessa Luiz Sá", "Vila Santista", "02560-170", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura para a região da Casa Verde/Cachoeirinha.", false, source, date)
+            ,point("jardim-antartica", "Ecoponto Jardim Antártica", "Rua Dom Aquino, nº 103", "Jardim Antártica", "02652-170", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura para a região da Casa Verde/Cachoeirinha.", false, source, date)
+            ,point("sao-leandro", "Ecoponto São Leandro", "Rua São Leandro, nº 13", "Vila Palmeiras", "02725-010", common, materials, schedule, restrictions, "Unidade indicada pela Prefeitura para a região da Casa Verde/Cachoeirinha.", false, source, date)
         );
     }
 
