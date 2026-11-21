@@ -13,6 +13,10 @@ export default function MapView({ point, compact = false }) {
     let active = true
     setPosition(null)
     setError('')
+    if (Array.isArray(point.coordinates) && point.coordinates.length >= 2) {
+      setPosition([point.coordinates[1], point.coordinates[0]])
+      return () => { active = false }
+    }
     geocodePoint(point)
       .then(coordinates => { if (active) setPosition(coordinates) })
       .catch(() => {
