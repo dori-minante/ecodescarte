@@ -1,8 +1,21 @@
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q='
 const cachePrefix = 'ecodescarte:coordinates:'
 const inFlight = new Map()
+let requestQueue = Promise.resolve()
+let lastRequestAt = 0
 
 const sleep = milliseconds => new Promise(resolve => window.setTimeout(resolve, milliseconds))
+
+function requestFromNominatim(query) {
+  const task = requestQueue.then(async () => {
+    const wait = Math.max(0, 1100 - (Date.now() - lastRequestAt))
+    if (wait) await sleep(wait)
+    lastRequestAt = Date.now()
+    return fetch(`${NOMINATIM_URL}${encodeURIComponent(query)}`, { headers: { Accept: 'application/json' } })
+  })
+  requestQueue = task.catch(() => undefined)
+  return task
+}
 
 function addressFor(point) {
   const street = point.address.replace(/,?\s*n[ºo]\s*\d+.*$/i, '')
@@ -12,7 +25,7 @@ function addressFor(point) {
 export async function geocode(query) {
   const key = query.toLowerCase()
   if (!inFlight.has(key)) {
-    inFlight.set(key, fetch(`${NOMINATIM_URL}${encodeURIComponent(query)}`, { headers: { Accept: 'application/json' } })
+    inFlight.set(key, requestFromNominatim(query)
       .then(response => response.ok ? response.json() : [])
       .then(data => {
         if (!data[0]) throw new Error('Localização não encontrada')
@@ -42,8 +55,7 @@ export function distanceInKm([fromLatitude, fromLongitude], [toLatitude, toLongi
 }
 
 export async function geocodePointsOnePerSecond(points, onPoint) {
-  for (const [index, point] of points.entries()) {
+  for (const point of points) {
     try { onPoint(point.id, await geocodePoint(point)) } catch { /* The list stays usable when one address cannot be geocoded. */ }
-    if (index < points.length - 1) await sleep(1100)
   }
 }
