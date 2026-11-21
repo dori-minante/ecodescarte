@@ -1,8 +1,15 @@
 package br.edu.ecodescarte.api;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class EcopointController {
+    private static final String GEOSAMPA_WFS_URL = "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=2.0.0&request=GetFeature&typeNames=geoportal:ecoponto&outputFormat=application/json&srsName=EPSG:4326";
     private final EcopointRepository repository;
+    private final HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
     EcopointController(EcopointRepository repository) { this.repository = repository; }
 
@@ -40,6 +49,23 @@ public class EcopointController {
             .filter(point -> search == null || search.isBlank() || normalized(point.name() + " " + point.address() + " " + point.district()).contains(normalized(search)))
             .sorted(Comparator.comparing(Ecopoint::name))
             .toList();
+    }
+
+    @GetMapping(value = "/geosampa/ecopoints", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> geoSampaEcopoints() {
+        try {
+            var request = HttpRequest.newBuilder(URI.create(GEOSAMPA_WFS_URL))
+                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                .header("User-Agent", "EcoDescarte/1.0 (projeto acadêmico)")
+                .timeout(Duration.ofSeconds(15))
+                .GET()
+                .build();
+            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return ResponseEntity.status(response.statusCode()).contentType(MediaType.APPLICATION_JSON).body(response.body());
+        } catch (Exception exception) {
+            return ResponseEntity.status(503).contentType(MediaType.APPLICATION_JSON)
+                .body("{\"message\":\"A camada pública do GeoSampa não está disponível agora.\"}");
+        }
     }
 
     @GetMapping("/ecopoints/{id}")

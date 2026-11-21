@@ -62,6 +62,7 @@ export async function geocodePointsOnePerSecond(points, onPoint) {
 
 export async function routeDistancesInKm(origin, points) {
   const routeable = points.filter(point => Array.isArray(point.coordinates) && point.coordinates.length >= 2)
+  if (!routeable.length) throw new Error('Não há coordenadas disponíveis para calcular a rota')
   const groups = []
   for (let index = 0; index < routeable.length; index += 45) {
     groups.push(routeable.slice(index, index + 45))

@@ -1,6 +1,6 @@
 import { normalizeText } from './api'
 
-const wfsUrl = 'https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=2.0.0&request=GetFeature&typeNames=geoportal:ecoponto&outputFormat=application/json&srsName=EPSG:4326'
+const wfsUrl = '/api/geosampa/ecopoints'
 const categories = ['entulho', 'móveis', 'poda', 'recicláveis']
 const materials = ['Entulho de pequenas reformas', 'Móveis e objetos volumosos', 'Podas domiciliares', 'Papel, plástico, metal e vidro']
 
@@ -18,8 +18,8 @@ export async function loadGeoSampaEcopoints() {
   return (data.features || []).map((feature, index) => {
     const properties = feature.properties || {}
     const name = field(properties, ['nome', 'nome_ecoponto', 'nm_ecoponto', 'nm_equipamento', 'equipamento'])
-    const address = field(properties, ['endereco', 'endereço', 'logradouro', 'endereco_completo'])
-    const district = field(properties, ['bairro', 'distrito', 'subprefeitura'])
+    const address = field(properties, ['endereco', 'endereço', 'logradouro', 'endereco_completo', 'nm_endereco'])
+    const district = field(properties, ['bairro', 'distrito', 'subprefeitura', 'nm_distrito', 'nm_subprefeitura'])
     if (!name) return null
     return {
       id: `geosampa-${slug(name) || index}`,
