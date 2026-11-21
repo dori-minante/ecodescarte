@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { api, normalizeText } from '../api'
+import { loadGeoSampaEcopoints } from '../geosampa'
 import EcopointCard from '../components/EcopointCard'
 import EmptyState from '../components/EmptyState'
 import ErrorState from '../components/ErrorState'
@@ -27,8 +28,14 @@ export default function ResultsPage() {
 
   useEffect(() => {
     setLoading(true)
-    Promise.all([api('/ecopoints'), api('/waste-guides')])
-      .then(([data, guideData]) => { setPoints(data); setGuides(guideData) })
+    Promise.all([api('/ecopoints'), api('/waste-guides'), loadGeoSampaEcopoints().catch(() => [])])
+      .then(([data, guideData, geoSampaData]) => {
+        const knownNames = new Set(data.map(point => normalizeText(point.name.replace(/^Ecoponto\s+/i, ''))))
+        const additional = geoSampaData.filter(point => !knownNames.has(normalizeText(point.name.replace(/^Ecoponto\s+/i, ''))))
+        window.sessionStorage.setItem('ecodescarte:geosampa-points', JSON.stringify(additional))
+        setPoints([...data, ...additional])
+        setGuides(guideData)
+      })
       .catch(requestError => setError(requestError.message))
       .finally(() => setLoading(false))
   }, [])

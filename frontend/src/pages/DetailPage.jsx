@@ -6,7 +6,12 @@ import LoadingState from '../components/LoadingState'
 import MapView from '../components/MapView'
 export default function DetailPage() {
   const { id } = useParams(); const [point, setPoint] = useState(null); const [error, setError] = useState('')
-  useEffect(() => { api(`/ecopoints/${id}`).then(setPoint).catch(error => setError(error.message)) }, [id])
+  useEffect(() => {
+    api(`/ecopoints/${id}`).then(setPoint).catch(requestError => {
+      const cached = JSON.parse(window.sessionStorage.getItem('ecodescarte:geosampa-points') || '[]').find(item => item.id === id)
+      if (cached) setPoint(cached); else setError(requestError.message)
+    })
+  }, [id])
   if (error) return <section className="container page-section"><ErrorState message={error} /><Link className="text-link" to="/resultados">Voltar aos resultados</Link></section>
   if (!point) return <section className="container page-section"><LoadingState /></section>
   const route = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${point.address}, ${point.district}, São Paulo, SP`)}`
