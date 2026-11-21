@@ -8,7 +8,7 @@ Este documento registra a construção em ordem cronológica. **Terminal** é a 
 
 ## Etapa 2 — Organizar o projeto
 
-**Objetivo:** criar uma base limpa e repetível. **Arquivos:** `.gitignore` impede que dependências, resultados de build e informações locais sejam enviados; `.editorconfig` mantém formatação; `.vscode/extensions.json`, `settings.json` e `tasks.json` orientam o VS Code; `Dockerfile` permite empacotar o projeto. **Comandos:** `git init` já havia criado o repositório; `git add` e `git commit -m "chore: initialize project structure"` registraram a base. **Resultado:** estrutura pronta. **Problema:** o Git precisou de permissão de gravação no diretório de histórico; a operação foi autorizada e concluída. **Como verificar:** `git status` não deve listar `AGENTS.md`.
+**Objetivo:** criar uma base limpa e repetível. **Arquivos:** `.gitignore` impede que dependências, resultados de build e informações locais sejam enviados; `.editorconfig` mantém formatação; `.vscode/extensions.json`, `settings.json` e `tasks.json` orientam o VS Code; `Dockerfile` permite empacotar o projeto. **Comandos:** `git init` já havia criado o repositório; `git add` e `git commit -m "chore: initialize project structure"` registraram a base. **Resultado:** estrutura pronta. **Problema:** o Git precisou de permissão de gravação no diretório de histórico; a operação foi autorizada e concluída. **Como verificar:** `git status` deve mostrar somente arquivos que realmente pertencem ao projeto.
 
 ## Etapa 3 — Criar o backend
 
@@ -41,3 +41,7 @@ Este documento registra a construção em ordem cronológica. **Terminal** é a 
 ## Etapa 9 — Documentação e próximas melhorias
 
 **Objetivo:** permitir entendimento por pessoa leiga e avaliação acadêmica. **Arquivos:** os documentos em `docs/` explicam fontes, testes, requisitos, versão, roteiro comunitário e demonstração. **Limitações:** a amostra deve ser atualizada periodicamente e mapas/CEP dependem de internet. **Melhorias futuras:** importar a lista municipal completa com processo de revisão, incluir mais pontos de logística reversa confirmados e aplicar teste com participantes reais, sem inventar respostas.
+
+## Etapa 10 — Preparar o envio ao GitHub
+
+**Objetivo:** permitir criar uma cópia privada do histórico fora do computador. **Ferramenta:** GitHub CLI é o programa oficial de terminal que conversa com o GitHub. **O que foi feito:** foi instalado o GitHub CLI 2.104.0 pelo comando `winget install --id GitHub.cli -e --accept-package-agreements --accept-source-agreements`. **Resultado:** instalação concluída. **Como verificar:** digite `gh --version` em um novo terminal. **Ponto que exige ação da proprietária:** o GitHub CLI ainda precisa de login seguro no navegador antes que seja possível criar ou enviar um repositório privado. Nenhuma conta, repositório remoto ou informação de acesso foi criada sem essa autorização.

@@ -8,7 +8,7 @@ Data de consulta: **16 de novembro de 2026**. Esta aplicação não cria endere�
 | Prefeitura de São Paulo — SP Mais Limpo | https://prefeitura.sp.gov.br/sp-mais-limpo | materiais aceitos, limites e itens não aceitos | orientações e restrições gerais |
 | Prefeitura de São Paulo — Coleta e descartes | https://coleta.prefeitura.sp.gov.br/ | explicação dos ecopontos e consulta por endereço | conferência da finalidade do serviço |
 | ViaCEP | https://viacep.com.br/ | bairro, cidade e UF de um CEP | busca por CEP, sem chave privada |
-| OpenStreetMap/Nominatim | https://www.openstreetmap.org/ e https://nominatim.openstreetmap.org/ | mapa e transformação temporária de endereço em posição | mapa no detalhe; não grava coordenadas |
+| OpenStreetMap/Nominatim | https://www.openstreetmap.org/ e https://nominatim.openstreetmap.org/ | mapa e transformação temporária de endereço em posição | mapa no detalhe e ordenação por proximidade; as coordenadas são consultadas sob demanda, respeitando o limite de uma consulta por segundo, e ficam no navegador para reutilização |
 | Green Eletron | https://greeneletron.org.br/localizador | localizador de logística reversa | encaminhamento de eletrônicos, pilhas e baterias |
 
 ## Critério adotado
