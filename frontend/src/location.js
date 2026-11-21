@@ -62,17 +62,21 @@ export async function geocodePointsOnePerSecond(points, onPoint) {
 
 export async function routeDistancesInKm(origin, points) {
   const routeable = points.filter(point => Array.isArray(point.coordinates) && point.coordinates.length >= 2)
-  const distances = {}
-  for (let index = 0; index < routeable.length; index += 80) {
-    const group = routeable.slice(index, index + 80)
+  const groups = []
+  for (let index = 0; index < routeable.length; index += 45) {
+    groups.push(routeable.slice(index, index + 45))
+  }
+  const distanceGroups = await Promise.all(groups.map(async group => {
     const coordinates = [[origin[1], origin[0]], ...group.map(point => point.coordinates)].map(pair => pair.join(',')).join(';')
     const response = await fetch(`https://router.project-osrm.org/table/v1/driving/${coordinates}?sources=0&annotations=distance`)
     const data = response.ok ? await response.json() : null
     if (!data?.distances?.[0]) throw new Error('Rota indisponível')
+    const distances = {}
     group.forEach((point, position) => {
       const meters = data.distances[0][position + 1]
       if (typeof meters === 'number') distances[point.id] = meters / 1000
     })
-  }
-  return distances
+    return distances
+  }))
+  return Object.assign({}, ...distanceGroups)
 }
