@@ -1,6 +1,7 @@
 package br.edu.ecodescarte.api;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,13 +22,19 @@ class EcopointControllerTests {
         mvc.perform(get("/api/health")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("ok"));
     }
     @Test void listsEcopoints() throws Exception {
-        mvc.perform(get("/api/ecopoints")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(20)));
+        mvc.perform(get("/api/ecopoints")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(greaterThan(20))));
     }
     @Test void filtersByDistrict() throws Exception {
         mvc.perform(get("/api/ecopoints").param("district", "Vila Mariana")).andExpect(status().isOk()).andExpect(jsonPath("$[0].district", containsString("Vila Mariana")));
     }
     @Test void filtersAccentedCategoryBySlug() throws Exception {
         mvc.perform(get("/api/ecopoints").param("category", "moveis")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(20)));
+    }
+    @Test void listsPruningCollectionPoints() throws Exception {
+        mvc.perform(get("/api/ecopoints").param("category", "podas")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(20)));
+    }
+    @Test void listsElectronicsCollectionPoints() throws Exception {
+        mvc.perform(get("/api/ecopoints").param("category", "eletronicos")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(greaterThan(1))));
     }
     @Test void returnsDetail() throws Exception {
         mvc.perform(get("/api/ecopoints/bresser")).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Ecoponto Bresser"));

@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react'
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import LoadingState from './LoadingState'
 import { geocodePoint } from '../location'
 
 const saoPauloCenter = [-23.55052, -46.63331]
+
+function MapResizer() {
+  const map = useMap()
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => map.invalidateSize())
+    const timer = window.setTimeout(() => map.invalidateSize(), 300)
+    return () => { window.cancelAnimationFrame(frame); window.clearTimeout(timer) }
+  }, [map])
+  return null
+}
 
 export default function MapView({ point, compact = false }) {
   const [position, setPosition] = useState(null)
@@ -32,7 +42,8 @@ export default function MapView({ point, compact = false }) {
   return <>
     {error && <p className="map-message" role="status">{error}</p>}
     <div className={`map ${compact ? 'compact-map' : ''}`}>
-      <MapContainer center={position} zoom={error ? 11 : 16} scrollWheelZoom={!compact}>
+      <MapContainer center={position} zoom={error ? 11 : 16} scrollWheelZoom={!compact} style={{ height: '100%', width: '100%' }}>
+        <MapResizer />
         <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {!error && <Marker position={position}><Popup><strong>{point.name}</strong><br />{point.address}</Popup></Marker>}
       </MapContainer>
