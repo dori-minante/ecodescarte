@@ -33,3 +33,15 @@ ai-log*
 Thumbs.db
 .idea/
 *.iml
+
+# Markdown — documentação do processo (não versionar)
+*.md
+
+# Assistentes/agentes de IA e configurações locais
+.claude/
+CLAUDE.md
+.cursor/
+.cursorrules
+.github/copilot-instructions.md
+.windsurf/
+.aider*
