@@ -1,6 +1,6 @@
-import { normalizeText } from './api'
+import { normalizeText, apiUrl } from './api'
 
-const wfsUrl = '/api/geosampa/ecopoints'
+const wfsUrl = apiUrl('/api/geosampa/ecopoints')
 const categories = ['entulho', 'móveis', 'poda', 'recicláveis']
 const materials = ['Entulho de pequenas reformas', 'Móveis e objetos volumosos', 'Podas domiciliares', 'Papel, plástico, metal e vidro']
 
