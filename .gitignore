@@ -12,36 +12,8 @@ backend/.mvn/maven.zip
 .env.*
 !.env.example
 
-# Instruções locais de agentes/ferramentas
-AGENTS.md
-AGENTS_*.md
-.codex/
-.codex*
-.ai/
-.agent/
-agents/
-*.prompt.md
-*.prompts.md
-
-# Logs locais de ferramentas
-.codex-log*
-agent-log*
-ai-log*
-
 # Sistema operacional e editor
 .DS_Store
 Thumbs.db
 .idea/
 *.iml
-
-# Markdown — documentação do processo (não versionar)
-*.md
-
-# Assistentes/agentes de IA e configurações locais
-.claude/
-CLAUDE.md
-.cursor/
-.cursorrules
-.github/copilot-instructions.md
-.windsurf/
-.aider*
