@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+.github
+
+# Editor / SO
+.vscode
+.editorconfig
+.DS_Store
+Thumbs.db
+
+# Logs e segredos
+*.log
+.env
+.env.*
+
+# Frontend (instalado dentro do container)
+frontend/node_modules
+frontend/dist
+
+# Backend (compilado dentro do container)
+backend/target
+backend/.mvn/maven.zip
