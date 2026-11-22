@@ -1,5 +1,5 @@
 const OilBottleIcon = () => <svg width="24" height="24" viewBox="0 0 32 32" focusable="false"><path d="M12 4h8v5l3 4v12a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3V13l3-4V4Z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" /><path d="M12 9h8M14 4h4" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /><path d="M20.5 16.2c1.5 1.8 2.3 2.8 2.3 4a2.3 2.3 0 1 1-4.6 0c0-1.2.8-2.2 2.3-4Z" fill="currentColor" stroke="none" /></svg>
-const icons = { entulho: '▦', moveis: '▱', reciclaveis: '♻', podas: '♣', eletronicos: '▣', 'pilhas-baterias': '▤', oleo: <OilBottleIcon /> }
+const icons = { entulho: '▦', moveis: '▱', reciclaveis: '♻', podas: '♣', gesso: '▨', eletronicos: '▣', 'pilhas-baterias': '▤', oleo: <OilBottleIcon /> }
 export default function WasteCategorySelector({ categories, selected, onSelect }) {
   return <div className="category-grid" role="list" aria-label="Categorias de resíduo">{categories.map(category => <button type="button" role="listitem" className={`category ${selected === category.slug ? 'selected' : ''}`} key={category.slug} onClick={() => onSelect(category.slug)} aria-pressed={selected === category.slug}><span aria-hidden="true">{icons[category.slug] || '♻'}</span><strong>{category.title}</strong><small>{category.description}</small></button>)}</div>
 }

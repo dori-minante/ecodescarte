@@ -35,6 +35,7 @@ public class EcopointController {
             new Category("moveis", "Móveis", "Sofá, colchão e objetos grandes"),
             new Category("reciclaveis", "Recicláveis", "Papel, plástico, metal e vidro"),
             new Category("podas", "Poda", "Galhos e restos de jardim"),
+            new Category("gesso", "Gesso", "Placas e restos de drywall"),
             new Category("eletronicos", "Eletrônicos", "Celular, computador e TV"),
             new Category("pilhas-baterias", "Pilhas e baterias", "Descarte especializado"),
             new Category("oleo", "Óleo de cozinha", "Garrafas fechadas em ponto específico")

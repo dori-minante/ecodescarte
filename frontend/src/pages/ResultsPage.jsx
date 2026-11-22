@@ -8,9 +8,6 @@ import ErrorState from '../components/ErrorState'
 import FilterBar from '../components/FilterBar'
 import LoadingState from '../components/LoadingState'
 
-const specialCategories = ['eletronicos', 'pilhas-baterias', 'oleo']
-const categoryAliases = { entulho: ['entulho'], moveis: ['móveis', 'moveis'], reciclaveis: ['recicláveis', 'reciclaveis'], podas: ['poda', 'podas'] }
-
 export default function ResultsPage() {
   const [params] = useSearchParams()
   const [category, setCategory] = useState(params.get('categoria') || '')
@@ -22,7 +19,7 @@ export default function ResultsPage() {
 
   useEffect(() => {
     setCategory(params.get('categoria') || '')
-    setDistrictFilter('')
+    setDistrictFilter(params.get('bairro') || '')
   }, [params])
 
   useEffect(() => {
@@ -32,10 +29,7 @@ export default function ResultsPage() {
         const keyFor = point => normalizeText(point.name.replace(/^Ecoponto\s+/i, ''))
         const geoByName = new Map(geoSampaData.map(point => [keyFor(point), point]))
         const localWithCoordinates = data.map(point => ({ ...point, coordinates: geoByName.get(keyFor(point))?.coordinates }))
-        const knownNames = new Set(data.map(keyFor))
-        const additional = geoSampaData.filter(point => !knownNames.has(keyFor(point)))
-        window.sessionStorage.setItem('ecodescarte:geosampa-points', JSON.stringify(additional))
-        setPoints([...localWithCoordinates, ...additional])
+        setPoints(localWithCoordinates)
         setGuides(guideData)
       })
       .catch(requestError => setError(requestError.message))
@@ -45,10 +39,14 @@ export default function ResultsPage() {
   const matchesCategory = point => {
     if (!category) return true
     if (category === 'gesso') return point.acceptsGypsum
-    return (categoryAliases[category] || []).some(alias => point.categories.some(item => normalizeText(item) === normalizeText(alias)))
+    if (category === 'podas') return point.categories.some(item => normalizeText(item) === 'poda')
+    return point.categories.some(item => normalizeText(item) === normalizeText(category))
   }
   const matchesDistrictFilter = point => !districtFilter || normalizeText(`${point.district} ${point.address} ${point.name}`).includes(normalizeText(districtFilter))
-  const filtered = points.filter(point => matchesCategory(point) && matchesDistrictFilter(point))
+  const byCategory = points.filter(matchesCategory)
+  const inDistrict = byCategory.filter(matchesDistrictFilter)
+  const districtHasNoMatch = Boolean(districtFilter) && byCategory.length > 0 && inDistrict.length === 0
+  const filtered = districtHasNoMatch ? byCategory : inDistrict
   const ordered = [...filtered].sort((first, second) => first.name.localeCompare(second.name, 'pt-BR'))
   const guide = guides.find(item => item.slug === category)
   const googleMapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${guide?.title || 'ecoponto'} em São Paulo, SP`)}`
@@ -56,12 +54,13 @@ export default function ResultsPage() {
   return <section className="container page-section">
     <Link className="back-link" to="/">← Página inicial</Link><h1>Resultados para o seu descarte</h1>
     <p className="intro">Use os filtros abaixo para ver os pontos que recebem o material desejado e, se quiser, limitar a lista a um bairro.</p>
-    {specialCategories.includes(category) && guide && <aside className="guide-callout"><h2>{guide.title}: confira a alternativa adequada</h2><p>{guide.destination}</p><p><strong>Atenção:</strong> {guide.warning}</p><a className="secondary-button" href={googleMapsSearch} target="_blank" rel="noreferrer">Pesquisar no Google Maps ↗</a></aside>}
+    {guide && <aside className="guide-callout"><h2>Como descartar: {guide.title}</h2><p>{guide.destination}</p><p><strong>Atenção:</strong> {guide.warning}</p><a className="secondary-button" href={googleMapsSearch} target="_blank" rel="noreferrer">Pesquisar no Google Maps ↗</a></aside>}
     <FilterBar category={category} district={districtFilter} onCategory={setCategory} onDistrict={setDistrictFilter} />
     {loading && <LoadingState />}{error && <ErrorState message={error} />}
     {!loading && !error && <>
+      {districtHasNoMatch && <p className="warning">Nenhum ecoponto encontrado no bairro “{districtFilter}”. Exibindo os ecopontos de outras regiões de São Paulo.</p>}
       <p className="result-count">{ordered.length} {ordered.length === 1 ? 'ponto encontrado' : 'pontos encontrados'}.</p>
-      {ordered.length ? <div className="point-grid">{ordered.map(point => <EcopointCard point={point} key={point.id} />)}</div> : <EmptyState>Não há ecopontos cadastrados para este tipo de material. Faça uma nova busca ou consulte o Google Maps.</EmptyState>}
+      {ordered.length ? <div className="point-grid">{ordered.map(point => <EcopointCard point={point} key={point.id} />)}</div> : <EmptyState>{category ? 'Não encontramos ecopontos cadastrados para este tipo de material nesta amostra. Tente outra categoria ou consulte o Google Maps.' : 'Nenhum ecoponto foi encontrado com os filtros atuais. Ajuste o bairro informado ou faça uma nova busca.'}</EmptyState>}
     </>}
   </section>
 }
